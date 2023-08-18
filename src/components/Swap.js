@@ -203,7 +203,7 @@ const Swap = () => {
             </Card>
             {isSwapping ? (
                 <Alert
-                    message = {'Swapping...'}
+                    message = {'Swap pending...'}
                     transactionHash={null}
                     variant={'info'}
                     setShowAlert={setShowAlert}

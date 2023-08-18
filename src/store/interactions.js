@@ -16,9 +16,9 @@ import {
   setContract,
   sharesLoaded,
 //   swapsLoaded,
-//   depositRequest,
-//   depositSuccess,
-//   depositFail,
+  depositRequest,
+  depositSuccess,
+  depositFail,
 //   withdrawRequest,
 //   withdrawSuccess,
 //   withdrawFail,
@@ -90,28 +90,27 @@ export const loadBalances = async (amm, tokens, account, dispatch) => {
 
 // ------------------------------------------------------------------------------
 // ADD LIQUDITY
-// export const addLiquidity = async (provider, amm, tokens, amounts, dispatch) => {
-//   try {
-//     dispatch(depositRequest())
+export const addLiquidity = async (provider, amm, tokens, amounts, dispatch) => {
+   try {
+      dispatch(depositRequest())
 
-//     const signer = await provider.getSigner()
+      const signer = await provider.getSigner()
+      
+      let transaction
+      transaction = await tokens[0].connect(signer).approve(amm.address, amounts[0])
+      await transaction.wait()
 
-//     let transaction
+      transaction = await tokens[1].connect(signer).approve(amm.address, amounts[1])
+      await transaction.wait()
 
-//     transaction = await tokens[0].connect(signer).approve(amm.address, amounts[0])
-//     await transaction.wait()
+      transaction = await amm.connect(signer).addLiquidity(amounts[0], amounts[1])
+      await transaction.wait()
+      dispatch(depositSuccess(transaction.hash))
 
-//     transaction = await tokens[1].connect(signer).approve(amm.address, amounts[1])
-//     await transaction.wait()
-
-//     transaction = await amm.connect(signer).addLiquidity(amounts[0], amounts[1])
-//     await transaction.wait()
-
-//     dispatch(depositSuccess(transaction.hash))
-//   } catch (error) {
-//     dispatch(depositFail())
-//   }
-// }
+  } catch (error) {
+     dispatch(depositFail())
+   }
+}
 
 // ------------------------------------------------------------------------------
 // REMOVE LIQUDITY
