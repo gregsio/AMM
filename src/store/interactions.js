@@ -15,7 +15,7 @@ import {
 import {
   setContract,
   sharesLoaded,
-//   swapsLoaded,
+  swapsLoaded,
   depositRequest,
   depositSuccess,
   depositFail,
@@ -163,13 +163,14 @@ export const removeLiquidity = async (provider, amm, shares, dispatch) => {
 // ------------------------------------------------------------------------------
 // LOAD ALL SWAPS
 
-// export const loadAllSwaps = async (provider, amm, dispatch) => {
-//   const block = await provider.getBlockNumber()
+export const loadAllSwaps = async (provider, amm, dispatch) => {
+  const block = await provider.getBlockNumber()
 
-//   const swapStream = await amm.queryFilter('Swap', 0, block)
-//   const swaps = swapStream.map(event => {
-//     return { hash: event.transactionHash, args: event.args }
-//   })
+  const swapStream = await amm.queryFilter('Swap', 0, block)
 
-//   dispatch(swapsLoaded(swaps))
-// }
+  const swaps = swapStream.map(event => {
+    return { hash: event.transactionHash, args: event.args }
+  })
+
+  dispatch(swapsLoaded(swaps))
+}
